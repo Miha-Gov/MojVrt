@@ -5,8 +5,20 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('home') }}">Domov</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('home') }}">Domov</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Prijava</a>
+            <a href="{{ url_for('register') }}">Registracija</a>
+        {% endif %}
     </nav>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block content %}{% endblock %}
 </body>
 </html>
