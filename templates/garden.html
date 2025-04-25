@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Moj vrt</h1>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Ime vrta" required>
+        <input type="number" name="size" placeholder="Velikost (m²)" step="0.1" required>
+        <select name="sunlight" required>
+            <option value="močno sonce">Močno sonce</option>
+            <option value="delna senca">Delna senca</option>
+        </select>
+        <button type="submit">Dodaj vrt</button>
+    </form>
+    <h2>Moji vrtovi</h2>
+    <ul>
+        {% for garden in gardens %}
+            <li>{{ garden.name }} ({{ garden.size }} m², {{ garden.sunlight }})</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
