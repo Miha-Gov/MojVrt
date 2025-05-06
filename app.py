@@ -19,6 +19,19 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+RECOMMENDATIONS = [
+    {"ime": "Paradižnik", "združljiv_z": ["Bazilika", "Korenje", "Čebula"], "min_size": 2.0, "sunlight": "močno sonce"},
+    {"ime": "Bazilika", "združljiv_z": ["Paradižnik", "Paprika"], "min_size": 0.5, "sunlight": "močno sonce"},
+    {"ime": "Korenje", "združljiv_z": ["Paradižnik", "Čebula"], "min_size": 1.0, "sunlight": "močno sonce"},
+    {"ime": "Paprika", "združljiv_z": ["Bazilika"], "min_size": 2.0, "sunlight": "močno sonce"},
+    {"ime": "Bučke", "združljiv_z": ["Koruza"], "min_size": 4.0, "sunlight": "močno sonce"},
+    {"ime": "Koruza", "združljiv_z": ["Bučke", "Fižol"], "min_size": 5.0, "sunlight": "močno sonce"},
+    {"ime": "Fižol", "združljiv_z": ["Koruza"], "min_size": 2.0, "sunlight": "močno sonce"},
+    {"ime": "Solata", "združljiv_z": ["Redkvice"], "min_size": 1.0, "sunlight": "delna senca"},
+    {"ime": "Redkvice", "združljiv_z": ["Solata", "Korenje"], "min_size": 0.5, "sunlight": "delna senca"},
+    {"ime": "Kumare", "združljiv_z": ["Fižol"], "min_size": 3.0, "sunlight": "močno sonce"}
+]
+
 @app.route('/')
 def home():
     return render_template('base.html')
@@ -64,7 +77,11 @@ def garden():
             return redirect(url_for('garden'))
         flash('Neveljavni podatki.')
     gardens = Garden.query.filter_by(user_id=current_user.id).all()
-    return render_template('garden.html', gardens=gardens)
+    filtered_recommendations = []
+    for garden in gardens:
+        garden_recs = [rec for rec in RECOMMENDATIONS if rec['min_size'] <= garden.size and rec['sunlight'] == garden.sunlight]
+        filtered_recommendations.append({"garden": garden, "recommendations": garden_recs})
+    return render_template('garden.html', gardens=gardens, filtered_recommendations=filtered_recommendations)
 
 if __name__ == '__main__':
     app.run(debug=True)

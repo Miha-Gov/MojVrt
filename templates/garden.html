@@ -16,4 +16,16 @@
             <li>{{ garden.name }} ({{ garden.size }} m², {{ garden.sunlight }})</li>
         {% endfor %}
     </ul>
+    <h2>Priporočila za sajenje</h2>
+    {% for item in filtered_recommendations %}
+        <h3>{{ item.garden.name }} ({{ item.garden.size }} m², {{ item.garden.sunlight }})</h3>
+        <ul>
+            {% for rec in item.recommendations %}
+                <li>{{ rec.ime }} - združljiv z: {{ rec.združljiv_z|join(', ') }}</li>
+            {% endfor %}
+            {% if item.recommendations|length == 0 %}
+                <li>Ni priporočil za ta vrt (premajhen ali neustrezna svetloba).</li>
+            {% endif %}
+        </ul>
+    {% endfor %}
 {% endblock %}
