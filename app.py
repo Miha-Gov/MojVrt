@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, login_user, login_required, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from database import db
 import bcrypt
 
@@ -82,6 +82,24 @@ def garden():
         garden_recs = [rec for rec in RECOMMENDATIONS if rec['min_size'] <= garden.size and rec['sunlight'] == garden.sunlight]
         filtered_recommendations.append({"garden": garden, "recommendations": garden_recs})
     return render_template('garden.html', gardens=gardens, filtered_recommendations=filtered_recommendations)
+
+@app.route('/delete_garden/<int:garden_id>', methods=['POST'])
+@login_required
+def delete_garden(garden_id):
+    garden = Garden.query.get_or_404(garden_id)
+    if garden.user_id != current_user.id:
+        flash('Nimate dovoljenja za brisanje tega vrta.')
+        return redirect(url_for('garden'))
+    db.session.delete(garden)
+    db.session.commit()
+    flash('Vrt je bil uspešno izbrisan.')
+    return redirect(url_for('garden'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
