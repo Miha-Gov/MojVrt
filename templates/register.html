@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+    <!-- Naslov strani -->
     <h1>Registracija</h1>
+    <!-- Obrazec za registracijo -->
     <form method="POST">
+        <!-- Polje za e-pošto -->
         <input type="email" name="email" placeholder="E-pošta" required>
+        <!-- Polje za geslo -->
         <input type="password" name="password" placeholder="Geslo" required>
+        <!-- Gumb za oddajo obrazca -->
         <button type="submit">Registriraj se</button>
     </form>
 {% endblock %}

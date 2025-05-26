@@ -1,33 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
+    <!-- Naslov strani -->
     <h1>Moj vrt</h1>
+    <!-- Obrazec za dodajanje novega vrta -->
     <form method="POST">
+        <!-- Polje za ime vrta -->
         <input type="text" name="name" placeholder="Ime vrta" required>
+        <!-- Polje za velikost vrta -->
         <input type="number" name="size" placeholder="Velikost (m²)" step="0.1" required>
+        <!-- Izbirnik za sončne razmere -->
         <select name="sunlight" required>
             <option value="močno sonce">Močno sonce</option>
             <option value="delna senca">Delna senca</option>
         </select>
+        <!-- Gumb za oddajo obrazca -->
         <button type="submit">Dodaj vrt</button>
     </form>
+    <!-- Seznam obstoječih vrtov -->
     <h2>Moji vrtovi</h2>
     <ul>
         {% for garden in gardens %}
             <li>
+                <!-- Podatki o vrtu -->
                 {{ garden.name }} ({{ garden.size }} m², {{ garden.sunlight }})
+                <!-- Povezava za urejanje vrta -->
+                <a href="{{ url_for('edit_garden', garden_id=garden.id) }}" style="margin-left: 10px;">Uredi</a>
+                <!-- Obrazec za brisanje vrta -->
                 <form action="{{ url_for('delete_garden', garden_id=garden.id) }}" method="POST" style="display:inline;">
                     <button type="submit" class="delete" onclick="return confirm('Ste prepričani, da želite izbrisati ta vrt?');">Izbriši</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
+    <!-- Prikaz priporočil za sajenje -->
     <h2>Priporočila za sajenje</h2>
     {% for item in filtered_recommendations %}
+        <!-- Naslov za posamezen vrt -->
         <h3>{{ item.garden.name }} ({{ item.garden.size }} m², {{ item.garden.sunlight }})</h3>
         <ul>
             {% for rec in item.recommendations %}
-                <li>{{ rec.ime }} - združljiv z: {{ rec.združljiv_z|join(', ') }}</li>
+                <!-- Priporočilo z združljivostjo in količino rastlin -->
+                <li>{{ rec.ime }} - združljiv z: {{ rec.združljiv_z|join(', ') }} (lahko posadite {{ rec.num_plants }} rastlin)</li>
             {% endfor %}
+            <!-- Sporočilo, če ni priporočil -->
             {% if item.recommendations|length == 0 %}
                 <li>Ni priporočil za ta vrt (premajhen ali neustrezna svetloba).</li>
             {% endif %}

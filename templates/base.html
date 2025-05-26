@@ -2,18 +2,23 @@
 <html>
 <head>
     <title>Moj Vrt</title>
+    <!-- Povezava do CSS datoteke za stilizacijo -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Navigacijska vrstica -->
     <nav>
         {% if current_user.is_authenticated %}
+            <!-- Povezave za prijavljene uporabnike -->
             <a href="{{ url_for('garden') }}">Moj vrt</a>
             <a href="{{ url_for('logout') }}">Odjava</a>
         {% else %}
+            <!-- Povezave za neprijavljene uporabnike -->
             <a href="{{ url_for('login') }}">Prijava</a>
             <a href="{{ url_for('register') }}">Registracija</a>
         {% endif %}
     </nav>
+    <!-- Prikaz sporočil (npr. napake ali uspeh) -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
@@ -21,6 +26,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+    <!-- Glavna vsebina strani -->
     {% block content %}{% endblock %}
 </body>
 </html>

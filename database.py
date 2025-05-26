@@ -1,3 +1,5 @@
+# Uvoz knjižnice za delo z bazo podatkov
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+# Inicializacija SQLAlchemy
+db = SQLAlchemy()  # Objekt za povezavo z bazo podatkov
