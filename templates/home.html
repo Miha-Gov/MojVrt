@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Hero sekcija -->
+    <section class="hero">
+        <h1>Načrtuj svoj sanjski vrt</h1>
+        <p>Z Moj Vrt aplikacijo enostavno ustvarjaj, upravljaj in optimiziraj svoje vrtove z osebnimi priporočili za sajenje.</p>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('garden') }}" class="cta">Pojdi na moje vrtove</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="cta">Začni zdaj</a>
+        {% endif %}
+    </section>
+{% endblock %}

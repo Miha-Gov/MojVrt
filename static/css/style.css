@@ -1,132 +1,241 @@
-/* Osnovni stil za celo stran */
+/* Osnovni stil za stran */
 body {
-    font-family: Arial, sans-serif; /* Pisava */
-    margin: 0; /* Odstranitev robov */
-    padding: 0; /* Odstranitev notranjih robov */
-    background-color: #f4f4f4; /* Svetlo sivo ozadje */
-    color: #333; /* Barva besedila */
+    font-family: 'Poppins', sans-serif; /* Moderna pisava */
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Svetlo ozadje */
+    color: #2d3436;
+    line-height: 1.6;
 }
 
-/* Stil za navigacijsko vrstico */
+/* Navigacijska vrstica */
+header {
+    background: linear-gradient(90deg, #2ecc71, #27ae60); /* Gradient ozadje */
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 nav {
-    background-color: #4CAF50; /* Zelena barva */
-    padding: 15px; /* Notranji rob */
-    text-align: center; /* Sredinska poravnava */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Senčenje */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Stil za povezave v navigaciji */
 nav a {
-    color: white; /* Bela barva */
-    text-decoration: none; /* Brez podčrtavanja */
-    margin: 0 20px; /* Razmik med povezavami */
-    font-size: 18px; /* Velikost pisave */
-    transition: color 0.3s; /* Gladka sprememba barve */
+    color: white;
+    text-decoration: none;
+    margin: 0 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover efekt za navigacijske povezave */
 nav a:hover {
-    color: #ffeb3b; /* Rumena barva ob hoverju */
+    color: #f1c40f; /* Rumena ob hoverju */
+    transform: translateY(-2px); /* Rahlo dviganje */
 }
 
-/* Stil za naslove */
+/* Glavna vsebina */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Naslovi */
 h1, h2, h3 {
-    color: #4CAF50; /* Zelena barva */
-    text-align: center; /* Sredinska poravnava */
+    color: #27ae60; /* Zelena barva */
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
-/* Stil za obrazce */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+/* Obrazci */
 form {
-    max-width: 400px; /* Največja širina */
-    margin: 20px auto; /* Osredotočenje */
-    padding: 20px; /* Notranji rob */
-    background-color: white; /* Belo ozadje */
-    border-radius: 8px; /* Zaobljeni robovi */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Senčenje */
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-/* Stil za vnosna polja */
+form:hover {
+    transform: translateY(-5px); /* Dviganje ob hoverju */
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
 select {
-    width: 100%; /* Polna širina */
-    padding: 10px; /* Notranji rob */
-    margin: 10px 0; /* Razmik med polji */
-    border: 1px solid #ddd; /* Svetel rob */
-    border-radius: 4px; /* Zaobljeni robovi */
-    box-sizing: border-box; /* Vključitev robov v širino */
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
 }
 
-/* Stil za gumbe */
+input:focus, select:focus {
+    outline: none;
+    border-color: #27ae60; /* Zelena ob fokusu */
+}
+
+/* Gumbi */
 button {
-    width: 100%; /* Polna širina */
-    padding: 10px; /* Notranji rob */
-    background-color: #4CAF50; /* Zelena barva */
-    color: white; /* Bela barva besedila */
-    border: none; /* Brez roba */
-    border-radius: 4px; /* Zaobljeni robovi */
-    cursor: pointer; /* Kazalec ob hoverju */
-    font-size: 16px; /* Velikost pisave */
-    transition: background-color 0.3s; /* Gladka sprememba barve */
+    width: 100%;
+    padding: 1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover efekt za gumbe */
 button:hover {
-    background-color: #45a049; /* Temnejša zelena */
+    background: #219653;
+    transform: scale(1.05); /* Rahlo povečanje */
 }
 
-/* Stil za gumb za brisanje */
 button.delete {
-    width: auto; /* Samodejna širina */
-    padding: 5px 10px; /* Manjši notranji rob */
-    background-color: #f44336; /* Rdeča barva */
-    margin-left: 10px; /* Razmik na levi */
+    width: auto;
+    padding: 0.5rem 1rem;
+    background: #e74c3c; /* Rdeča za brisanje */
 }
 
-/* Hover efekt za gumb za brisanje */
 button.delete:hover {
-    background-color: #d32f2f; /* Temnejša rdeča */
+    background: #c0392b;
 }
 
-/* Stil za sezname */
+/* Seznami */
 ul {
-    list-style-type: none; /* Brez oznak */
-    padding: 0; /* Brez notranjih robov */
-    max-width: 600px; /* Največja širina */
-    margin: 20px auto; /* Osredotočenje */
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 2rem auto;
 }
 
-/* Stil za elemente seznama */
 li {
-    background-color: white; /* Belo ozadje */
-    padding: 15px; /* Notranji rob */
-    margin: 10px 0; /* Razmik med elementi */
-    border-radius: 4px; /* Zaobljeni robovi */
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Senčenje */
+    background: white;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
 }
 
-/* Stil za sporočila (flash) */
-p {
-    max-width: 400px; /* Največja širina */
-    margin: 10px auto; /* Osredotočenje */
-    padding: 10px; /* Notranji rob */
-    background-color: #ffeb3b; /* Rumeno ozadje */
-    color: #333; /* Barva besedila */
-    text-align: center; /* Sredinska poravnava */
-    border-radius: 4px; /* Zaobljeni robovi */
+li:hover {
+    transform: translateX(10px); /* Pomik ob hoverju */
 }
 
-/* Stil za povezave (npr. Uredi) */
+/* Povezave */
 a {
-    color: #4CAF50; /* Zelena barva */
-    text-decoration: none; /* Brez podčrtavanja */
-    font-size: 16px; /* Velikost pisave */
-    transition: color 0.3s; /* Gladka sprememba barve */
+    color: #27ae60;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-/* Hover efekt za povezave */
 a:hover {
-    color: #45a049; /* Temnejša zelena */
+    color: #219653;
+}
+
+/* Flash sporočila */
+p.flash-message {
+    max-width: 400px;
+    margin: 1rem auto;
+    padding: 1rem;
+    background: #f1c40f;
+    color: #2d3436;
+    text-align: center;
+    border-radius: 8px;
+    animation: slideIn 0.5s ease;
+}
+
+/* Animacija za sporočila */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Domača stran */
+.hero {
+    background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6') center/cover;
+    color: white;
+    text-align: center;
+    padding: 5rem 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero a.cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #27ae60;
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.hero a.cta:hover {
+    background: #219653;
+    transform: scale(1.1);
+}
+
+/* Footer */
+footer{
+  background: linear-gradient(90deg, #2ecc71, #27ae60); /* Gradient ozadje */
+  padding: 1rem 2rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #fff;
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    .hero h2 { font-size: 2rem; }
+    nav { flex-direction: column; }
+    nav a { margin: 0.5rem 0; }
+    form { padding: 1.5rem; }
+    .hero { padding: 3rem 1rem; }
 }

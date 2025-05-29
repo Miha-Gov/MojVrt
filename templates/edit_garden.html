@@ -1,21 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Naslov strani -->
     <h1>Uredi vrt</h1>
-    <!-- Obrazec za urejanje vrta -->
     <form method="POST">
-        <!-- Polje za ime vrta (predizpolnjeno) -->
         <input type="text" name="name" value="{{ garden.name }}" placeholder="Ime vrta" required>
-        <!-- Polje za velikost vrta (predizpolnjeno) -->
-        <input type="number" name="size" value="{{ garden.size }}" placeholder="Velikost (m²)" step="0.1" required>
-        <!-- Izbirnik za sončne razmere (trenutna vrednost izbrana) -->
+        <input type="number" name="size" value="{{ garden.size }}" placeholder="Velikost v m²" step="0.1" required>
         <select name="sunlight" required>
             <option value="močno sonce" {% if garden.sunlight == "močno sonce" %}selected{% endif %}>Močno sonce</option>
             <option value="delna senca" {% if garden.sunlight == "delna senca" %}selected{% endif %}>Delna senca</option>
         </select>
-        <!-- Gumb za shranjevanje sprememb -->
         <button type="submit">Shrani spremembe</button>
     </form>
-    <!-- Povezava za vrnitev na seznam vrtov -->
     <p><a href="{{ url_for('garden') }}">Nazaj na moje vrtove</a></p>
 {% endblock %}
