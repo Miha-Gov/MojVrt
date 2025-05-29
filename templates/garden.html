@@ -1,13 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Moj vrt</h1>
-    <!-- Obrazec za dodajanje vrta -->
+    <!-- Obrazec za dodajanje novega vrta -->
     <form method="POST">
         <input type="text" name="name" placeholder="Ime vrta (npr. Sončni vrt)" required>
         <input type="number" name="size" placeholder="Velikost v m² (npr. 10)" step="0.1" required>
         <select name="sunlight" required>
             <option value="močno sonce">Močno sonce</option>
             <option value="delna senca">Delna senca</option>
+        </select>
+        <!-- Novo: izbirnik za tip tal -->
+        <select name="soil_type" required>
+            <option value="lahka">Lahka tla</option>
+            <option value="srednje težka">Srednje težka tla</option>
+            <option value="težka">Težka tla</option>
+            <option value="peščena">Peščena tla</option>
+        </select>
+        <!-- Novo: izbirnik za izpostavljenost vetru -->
+        <select name="wind_exposure" required>
+            <option value="nizka">Nizka izpostavljenost vetru</option>
+            <option value="srednja">Srednja izpostavljenost vetru</option>
+            <option value="visoka">Visoka izpostavljenost vetru</option>
         </select>
         <button type="submit">Dodaj vrt</button>
     </form>
@@ -16,7 +29,8 @@
     <ul>
         {% for garden in gardens %}
             <li>
-                <span>{{ garden.name }} ({{ garden.size }} m², {{ garden.sunlight }})</span>
+                <!-- Prikaz novih lastnosti vrta -->
+                <span>{{ garden.name }} ({{ garden.size }} m², {{ garden.sunlight }}, {{ garden.soil_type }}, {{ garden.wind_exposure }})</span>
                 <div>
                     <a href="{{ url_for('edit_garden', garden_id=garden.id) }}">Uredi</a>
                     <form action="{{ url_for('delete_garden', garden_id=garden.id) }}" method="POST" style="display:inline;">
@@ -29,13 +43,14 @@
     <!-- Priporočila -->
     <h2>Priporočila za sajenje</h2>
     {% for item in filtered_recommendations %}
-        <h3>{{ item.garden.name }} ({{ item.garden.size }} m², {{ item.garden.sunlight }})</h3>
+        <h3>{{ item.garden.name }} ({{ item.garden.size }} m², {{ item.garden.sunlight }}, {{ item.garden.soil_type }}, {{ item.garden.wind_exposure }})</h3>
         <ul>
             {% for rec in item.recommendations %}
-                <li>{{ rec.ime }} - združljiv z: {{ rec.združljiv_z|join(', ') }} (lahko posadite {{ rec.num_plants }} rastlin)</li>
+                <!-- Prikaz časa sajenja -->
+                <li>{{ rec.ime }} - združljiv z: {{ rec.združljiv_z|join(', ') }} (lahko posadite {{ rec.num_plants }} rastlin, čas sajenja: {{ rec.planting_time }})</li>
             {% endfor %}
             {% if item.recommendations|length == 0 %}
-                <li>Ni priporočil za ta vrt (premajhen ali neustrezna svetloba).</li>
+                <li>Ni priporočil za ta vrt (premajhen, neustrezna svetloba, tla ali izpostavljenost vetru).</li>
             {% endif %}
         </ul>
     {% endfor %}

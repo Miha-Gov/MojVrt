@@ -1,3 +1,4 @@
+# Uvoz potrebnih knjižnic
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from database import db
@@ -20,22 +21,28 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Razširjen seznam priporočil z novimi lastnostmi: čas sajenja in tip tal
 RECOMMENDATIONS = [
-    {"ime": "Paradižnik", "združljiv_z": ["Bazilika", "Korenje", "Čebula"], "min_size": 2.0, "sunlight": "močno sonce"},
-    {"ime": "Bazilika", "združljiv_z": ["Paradižnik", "Paprika"], "min_size": 0.5, "sunlight": "močno sonce"},
-    {"ime": "Korenje", "združljiv_z": ["Paradižnik", "Čebula"], "min_size": 1.0, "sunlight": "močno sonce"},
-    {"ime": "Paprika", "združljiv_z": ["Bazilika"], "min_size": 2.0, "sunlight": "močno sonce"},
-    {"ime": "Bučke", "združljiv_z": ["Koruza"], "min_size": 4.0, "sunlight": "močno sonce"},
-    {"ime": "Koruza", "združljiv_z": ["Bučke", "Fižol"], "min_size": 5.0, "sunlight": "močno sonce"},
-    {"ime": "Fižol", "združljiv_z": ["Koruza"], "min_size": 2.0, "sunlight": "močno sonce"},
-    {"ime": "Solata", "združljiv_z": ["Redkvice"], "min_size": 1.0, "sunlight": "delna senca"},
-    {"ime": "Redkvice", "združljiv_z": ["Solata", "Korenje"], "min_size": 0.5, "sunlight": "delna senca"},
-    {"ime": "Kumare", "združljiv_z": ["Fižol"], "min_size": 3.0, "sunlight": "močno sonce"}
+    {"ime": "Paradižnik", "združljiv_z": ["Bazilika", "Korenje", "Čebula"], "min_size": 2.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["srednje težka", "lahka"]},
+    {"ime": "Bazilika", "združljiv_z": ["Paradižnik", "Paprika"], "min_size": 0.5, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["lahka"]},
+    {"ime": "Korenje", "združljiv_z": ["Paradižnik", "Čebula"], "min_size": 1.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["lahka", "peščena"]},
+    {"ime": "Paprika", "združljiv_z": ["Bazilika"], "min_size": 2.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["srednje težka"]},
+    {"ime": "Bučke", "združljiv_z": ["Koruza"], "min_size": 4.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["težka", "srednje težka"]},
+    {"ime": "Koruza", "združljiv_z": ["Bučke", "Fižol"], "min_size": 5.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["srednje težka"]},
+    {"ime": "Fižol", "združljiv_z": ["Koruza"], "min_size": 2.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["lahka", "srednje težka"]},
+    {"ime": "Solata", "združljiv_z": ["Redkvice"], "min_size": 1.0, "sunlight": "delna senca", "planting_time": "pomlad-jesen", "soil_type": ["lahka", "srednje težka"]},
+    {"ime": "Redkvice", "združljiv_z": ["Solata", "Korenje"], "min_size": 0.5, "sunlight": "delna senca", "planting_time": "pomlad-jesen", "soil_type": ["lahka", "peščena"]},
+    {"ime": "Kumare", "združljiv_z": ["Fižol"], "min_size": 3.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["srednje težka"]},
+    {"ime": "Špinača", "združljiv_z": ["Solata", "Redkvice"], "min_size": 1.0, "sunlight": "delna senca", "planting_time": "pomlad-jesen", "soil_type": ["lahka"]},
+    {"ime": "Čebula", "združljiv_z": ["Korenje", "Paradižnik"], "min_size": 1.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["lahka", "peščena"]},
+    {"ime": "Drobnjak", "združljiv_z": ["Paradižnik"], "min_size": 0.5, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["lahka"]},
+    {"ime": "Zelje", "združljiv_z": ["Fižol"], "min_size": 3.0, "sunlight": "močno sonce", "planting_time": "pomlad", "soil_type": ["težka", "srednje težka"]},
+    {"ime": "Rukola", "združljiv_z": ["Solata"], "min_size": 0.5, "sunlight": "delna senca", "planting_time": "pomlad-jesen", "soil_type": ["lahka"]}
 ]
 
 @app.route('/')
 def home():
-    return render_template('home.html')  # Posodobljeno za novo domačo stran
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,11 +75,21 @@ def register():
 @login_required
 def garden():
     if request.method == 'POST':
+        # Pridobitev novih polj iz obrazca
         name = request.form['name']
         size = float(request.form['size'])
         sunlight = request.form['sunlight']
+        soil_type = request.form['soil_type']
+        wind_exposure = request.form['wind_exposure']
         if name and size > 0:
-            new_garden = Garden(name=name, size=size, sunlight=sunlight, user_id=current_user.id)
+            new_garden = Garden(
+                name=name,
+                size=size,
+                sunlight=sunlight,
+                soil_type=soil_type,
+                wind_exposure=wind_exposure,
+                user_id=current_user.id
+            )
             db.session.add(new_garden)
             db.session.commit()
             return redirect(url_for('garden'))
@@ -83,12 +100,17 @@ def garden():
     for garden in gardens:
         garden_recs = []
         for rec in RECOMMENDATIONS:
-            if rec['min_size'] <= garden.size and rec['sunlight'] == garden.sunlight:
+            # Filtriranje priporočil glede na več kriterijev
+            if (rec['min_size'] <= garden.size and
+                rec['sunlight'] == garden.sunlight and
+                garden.soil_type in rec['soil_type'] and
+                (garden.wind_exposure != "visoka" or rec['ime'] not in ["Bazilika", "Drobnjak"])):  # Nekatere rastline ne prenesejo vetra
                 num_plants = int(garden.size / rec['min_size'])
                 garden_recs.append({
                     "ime": rec["ime"],
                     "združljiv_z": rec["združljiv_z"],
-                    "num_plants": num_plants
+                    "num_plants": num_plants,
+                    "planting_time": rec["planting_time"]
                 })
         filtered_recommendations.append({"garden": garden, "recommendations": garden_recs})
     
@@ -106,10 +128,14 @@ def edit_garden(garden_id):
         name = request.form['name']
         size = float(request.form['size'])
         sunlight = request.form['sunlight']
+        soil_type = request.form['soil_type']
+        wind_exposure = request.form['wind_exposure']
         if name and size > 0:
             garden.name = name
             garden.size = size
             garden.sunlight = sunlight
+            garden.soil_type = soil_type
+            garden.wind_exposure = wind_exposure
             db.session.commit()
             flash('Vrt je bil uspešno posodobljen.')
             return redirect(url_for('garden'))

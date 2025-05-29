@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Uredi vrt</h1>
+    <!-- Obrazec za urejanje vrta -->
     <form method="POST">
         <input type="text" name="name" value="{{ garden.name }}" placeholder="Ime vrta" required>
         <input type="number" name="size" value="{{ garden.size }}" placeholder="Velikost v m²" step="0.1" required>
@@ -8,7 +9,20 @@
             <option value="močno sonce" {% if garden.sunlight == "močno sonce" %}selected{% endif %}>Močno sonce</option>
             <option value="delna senca" {% if garden.sunlight == "delna senca" %}selected{% endif %}>Delna senca</option>
         </select>
+        <!-- Novo: izbirnik za tip tal -->
+        <select name="soil_type" required>
+            <option value="lahka" {% if garden.soil_type == "lahka" %}selected{% endif %}>Lahka tla</option>
+            <option value="srednje težka" {% if garden.soil_type == "srednje težka" %}selected{% endif %}>Srednje težka tla</option>
+            <option value="težka" {% if garden.soil_type == "težka" %}selected{% endif %}>Težka tla</option>
+            <option value="peščena" {% if garden.soil_type == "peščena" %}selected{% endif %}>Peščena tla</option>
+        </select>
+        <!-- Novo: izbirnik za izpostavljenost vetru -->
+        <select name="wind_exposure" required>
+            <option value="nizka" {% if garden.wind_exposure == "nizka" %}selected{% endif %}>Nizka izpostavljenost</option>
+            <option value="srednja" {% if garden.wind_exposure == "srednja" %}selected{% endif %}>Srednja izpostavljenost</option>
+            <option value="visoka" {% if garden.wind_exposure == "visoka" %}selected{% endif %}>Visoka izpostavljenost</option>
+        </select>
         <button type="submit">Shrani spremembe</button>
     </form>
-    <p><a href="{{ url_for('garden') }}">Nazaj na moje vrtove</a></p>
+    <p><a href="{% url_for('garden') }}">Nazaj na moje vrtove</a></p>
 {% endblock %}
